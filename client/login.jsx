@@ -54,6 +54,9 @@ const LoginWindow = (props) => {
             <label htmlFor="pass">Password: </label>
             <input id="pass" type="password" name="pass" placeholder="password" />
             <input className="formSubmit" type="submit" value="Sign in" />
+            <label htmlFor="username">Username: </label>
+            <button className="resetPassword" type="reset" value="Reset Password">Reset Password</button>
+
         </form>
     );
 };
@@ -78,9 +81,30 @@ const SignupWindow = (props) => {
     );
 };
 
+const ResetPassWindow = (props) => {
+    return (
+        <form id="resetForm"
+            name="resetForm"
+            onSubmit={handleResetPass}
+            action="/resetPass"
+            method="POST"
+            className="mainForm"
+        >
+            <label htmlFor="username">Username: </label>
+            <input id="user" type="text" name="username" placeholder="username" />
+            <label htmlFor="pass">New Password: </label>
+            <input id="pass" type="password" name="pass" placeholder="password" />
+            <label htmlFor="pass">New Password: </label>
+            <input id="pass2" type="password" name="pass2" placeholder="retype password" />
+            <input id="resetPassButton" className="formSubmit" type="submit" value="Sign up" />
+        </form>
+    );
+};
+
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
+    const resetPassButton = document.getElementById('resetPassButton');
 
     const root = createRoot(document.getElementById('content'));
 
@@ -90,11 +114,15 @@ const init = () => {
         return false;
     });
 
-    console.log(signupButton);
-
     signupButton.addEventListener('click', (e) => {
         e.preventDefault();
         root.render( <SignupWindow /> );
+        return false;
+    });
+
+    resetPassButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        root.render( <ResetPassWindow /> );
         return false;
     });
 
