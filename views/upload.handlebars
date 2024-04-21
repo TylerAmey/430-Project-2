@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>DomoMaker</title>
+  <title>Files</title>
   <link rel="shortcut icon" href="/assets/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
@@ -38,8 +38,13 @@
       action='/upload' 
       method='post' 
       encType="multipart/form-data">
-        <input type="file" name="sampleFile" />
-        <input type='submit' value='Upload!' />
+      <div class="container">
+        <div class="drop-area" id="dropArea">
+          <h3 class="drop-text">Drag and Drop files here (in progress)</h3>
+          <input type="file" id="fileInput" name="sampleFile" />
+        </div>
+      </div>
+        <input class='uploading' type='submit' value='Upload' />
     </form> 
     
     <!-- Below is a standard html form that simply makes a GET request
@@ -55,14 +60,29 @@
       files from the server and do things like generate image tags for
       any pngs. 
     -->
+    <br>
+
     <form ref='retrieveForm' 
       id='retrieveForm' 
       action='/retrieve' 
       method='get'>
       <label for='fileName'>Retrieve File By ID: </label>
       <input name='_id' type='text' />
-      <input type='submit' value='Retrieve!' />
+      <input type='submit' value='Search' />
     </form>
+
+    <br>
+
+    <form ref='searchForm' 
+      id='searchForm' 
+      action='/search' 
+      method='get'>
+      <label for='fileName'>Search Files For: </label>
+      <input name='_id' type='text' />
+      <input type='submit' value='Search' />
+    </form>
+
+    <br>
 
     <!-- If a user uploaded an image, it is entirely possible for us
       to display that image using an img tag. The example below assumes
@@ -74,5 +94,20 @@
 
     <!-- client.js uses this section to display some information -->
     <section id="messages"></section>
+
+    <section id="fileStore">
+    {{#if files}}
+    <h2>Input Files:</h2>
+      {{#each files}}
+       <div class="fileDisplay">
+        
+          <img src="/assets/img/excel.png" alt="excel logo" class="domoFace">
+          <h3 class="domoName">Name: {{this.name}}</h3>
+       </div>
+       {{/each}}
+    {{else}}
+      <h3 class="emptyFiles">No files yet!</h3>
+    {{/if}}
+  </section>
 </body>
 </html>

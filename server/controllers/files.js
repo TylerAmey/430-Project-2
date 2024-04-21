@@ -5,11 +5,23 @@
    which returns to us our file model.
 */
 
+const { forEach } = require('underscore');
 const File = require('../models/filestore.js');
+var XLSX = require("xlsx");
+const fs = require('fs');
 
 // A simple handler for rendering the upload page
-const uploadPage = (req, res) => {
-  res.render('upload');
+const uploadPage = async (req, res) => {
+  try {
+    const query = { owner: req.session.account._id };
+    console.log(query);
+    const docs = await File.find(query).select('name').lean().exec();
+    console.log(docs);
+    return res.render('upload', {files: docs});
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'Error retrieving domos!' });
+  }
 };
 
 /* This handler function enables users to upload files. We will store
@@ -177,8 +189,79 @@ const retrieveFile = async (req, res) => {
   return res.send(doc.data);
 };
 
+//thought process in making the search function
+const searchFile = async (req, res) =>{
+
+  //nothing was input
+  if (!req.query._id) {
+    return res.status(400).json({ error: 'Missing search term!' });
+  }
+  
+  let doc;
+  const query = { owner: req.session.account._id };
+
+  //retrieve the files. I need to find how to do this when grabbing all files
+  try {
+    docs = await File.find(query).select('name').lean().exec();
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: 'Something went wrong retrieving files!' });
+  }
+  //if no files were found. Could handle better
+  if (!doc) {
+    return res.status(404).json({ error: 'No files found!' });
+  }
+
+  // res.set({
+  //   'Content-Type': doc.mimetype,
+  //   'Content-Length': doc.size,
+  //   'Content-Disposition': `filename="${doc.name}"`,
+  // });
+
+  //get arrays for the sheets we find
+  let sheets = [];
+
+  for(let i=0; i < doc.data.length; i++){
+    //convert to json for ease of use
+    var jsonSheet = XLSX.utils.sheet_to_json(sheet,{blankrows : false, defval: ''});
+
+    try {
+      //search for the term. possibly make everything lowercase?
+      const jsonData = JSON.parse(jsonSheet);
+      const searchString = req.query._id;
+      const found = searchJSON(jsonData, searchString);
+      //if found add
+      if (found) {
+        sheets.push(doc.data[i]);
+      }
+
+    } catch (error) {
+        console.error('Error parsing JSON:', error);
+    }
+
+  }
+//return for later use (displaying which sheets it was found in)
+  return res.send(sheets);
+}
+
+function searchJSON(object, searchString) {
+  for (let key in object) {
+      if (typeof object[key] === 'object') {
+          // Recursive call if the value is an object
+          if (searchJSON(object[key], searchString)) {
+              return true;
+          }
+      } else if (typeof object[key] === 'string' && object[key].includes(searchString)) {
+          // Check if the string is found
+          return true;
+      }
+  }
+  return false;
+}
+
 module.exports = {
   uploadPage,
   uploadFile,
   retrieveFile,
+  searchFile,
 };

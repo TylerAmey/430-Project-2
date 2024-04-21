@@ -263,3 +263,49 @@ h3.domoAge {
 .domo:last-child {
     margin-bottom:10px;
 }
+
+/* New CSS */
+
+#uploadForm{
+    text-align: center;
+    padding-top: 50px;
+}
+
+#retrieveForm{
+    text-align: center;
+}
+
+#searchForm{
+    text-align: center;
+}
+
+.container {
+    margin: 50px auto;
+    width: 25%;
+    text-align: center;
+  }
+  
+  .drop-area {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    cursor: pointer;
+  }
+  
+  .drop-text {
+    font-size: 1.2em;
+  }
+  
+  .file-label {
+    cursor: pointer;
+    display: block;
+    margin-top: 10px;
+  }
+  
+  #fileList {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .file-item {
+    margin-bottom: 5px;
+  }

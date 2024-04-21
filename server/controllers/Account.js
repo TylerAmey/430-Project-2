@@ -1,5 +1,4 @@
 const models = require('../models');
-const { db } = require('../models/Domo');
 
 const { Account } = models;
 
@@ -26,7 +25,7 @@ const login = (req, res) => {
 
     req.session.account = Account.toAPI(account);
 
-    return res.json({ redirect: '/maker' });
+    return res.json({ redirect: '/upload' });
   });
 };
 
@@ -48,7 +47,7 @@ const signup = async (req, res) => {
     const newAccount = new Account({ username, password: hash });
     await newAccount.save();
     req.session.account = Account.toAPI(newAccount);
-    return res.json({ redirect: '/maker' });
+    return res.json({ redirect: '/upload' });
   } catch (err) {
     console.log(err);
     if (err.code === 11000) {
@@ -59,7 +58,8 @@ const signup = async (req, res) => {
 };
 
 const deleteAccount = async (req, res) => {
-  db.accounts.deleteOne( {username: req.session.account.username});
+  res.accounts.deleteOne( {username: req.session.account.username});
+  req.session.destroy();
   return res.redirect('/login');
 };
 
