@@ -2,112 +2,124 @@
 <head>
   <meta charset="utf-8"/>
   <title>Files</title>
-  <link rel="shortcut icon" href="/assets/img/favicon.png"/>
+  <link rel="shortcut icon" href="/assets/img/excel.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
-  <nav><a href="/login"><img id="logo" src="/assets/img/face.png" alt="face logo"/></a>
+  <nav><a href="/login"><img id="logo" src="/assets/img/excel.png" alt="face logo"/></a>
     <div class="navlink"><a href="/logout">Log out</a></div>
     <div class="navlink"><a href="/deleteAccount">Delete Account</a></div>
+    <div class="navlink"><a href="/upgrade">Upgrade</a></div>
   </nav>
+  <div class="flex">
+    <div class="border-left">
+      <h3>Want to be Ad free? Click here to upgrade:</h3>
+    </div>
 
-      <!-- Below is a simple html form capable of sending files to the
-      server. You'll notice two new things. The first is that the
-      encoding type of the form is set to "multipart/formdata". This
-      is different from the standard encoding type that html forms
-      use (x-http-form-urlencoded). The urlencoded format does not
-      support things like files. The express-fileupload plugin on
-      our server will be looking for multipart/formdata.
+        <!-- Below is a simple html form capable of sending files to the
+        server. You'll notice two new things. The first is that the
+        encoding type of the form is set to "multipart/formdata". This
+        is different from the standard encoding type that html forms
+        use (x-http-form-urlencoded). The urlencoded format does not
+        support things like files. The express-fileupload plugin on
+        our server will be looking for multipart/formdata.
 
-      You'll also notice that the form has an input of type "file".
-      This is the input that allows you to select a file off your
-      machine. Importantly we have given the input a name as well.
-      In this case "sampleFile". This name is arbitrary and could
-      be changed to anything. However, our server will specifically
-      check for req.files.sampleFile and so if we wanted to change
-      it we would also need to change what the server is looking for.
+        You'll also notice that the form has an input of type "file".
+        This is the input that allows you to select a file off your
+        machine. Importantly we have given the input a name as well.
+        In this case "sampleFile". This name is arbitrary and could
+        be changed to anything. However, our server will specifically
+        check for req.files.sampleFile and so if we wanted to change
+        it we would also need to change what the server is looking for.
 
-      This form is entirely capable of sending a file to the server
-      without any javascript. We do, though, have custom javascript
-      running in the client.js script that overrides what the form
-      would do. This will prevent our form from navigating us to a
-      new page when the server responds to the POST request.
-    -->
-    <form ref='uploadForm' 
-      id='uploadForm' 
-      action='/upload' 
-      method='post' 
-      encType="multipart/form-data">
-      <div class="container">
-        <div class="drop-area" id="dropArea">
-          <h3 class="drop-text">Drag and Drop files here (in progress)</h3>
-          <input type="file" id="fileInput" name="sampleFile" />
-        </div>
-      </div>
-        <input class='uploading' type='submit' value='Upload' />
-    </form> 
-    
-    <!-- Below is a standard html form that simply makes a GET request
-      to the server. Notice that it has an input called _id. Because of
-      how html forms work by default, this will be serialized into the
-      x-http-form-urlencoded format when the submit button is pressed.
-
-      Based on how the server responds (in the Content-Disposition header)
-      our browser will either download the given file or will redirect
-      to show us the media that we recieved.
-
-      It would also be possible to use FETCH to request a number of
-      files from the server and do things like generate image tags for
-      any pngs. 
-    -->
-    <br>
-
-    <form ref='retrieveForm' 
-      id='retrieveForm' 
-      action='/retrieve' 
-      method='get'>
-      <label for='fileName'>Retrieve File By ID: </label>
-      <input name='_id' type='text' />
-      <input type='submit' value='Search' />
-    </form>
-
-    <br>
-
-    <form ref='searchForm' 
-      id='searchForm' 
-      action='/search' 
-      method='get'>
-      <label for='fileName'>Search Files For: </label>
-      <input name='_id' type='text' />
-      <input type='submit' value='Search' />
-    </form>
-
-    <br>
-
-    <!-- If a user uploaded an image, it is entirely possible for us
-      to display that image using an img tag. The example below assumes
-      that the database has an image with an _id of 1234. If that image
-      exists, the img tag will display it in the page like any other
-      image since the server sends it back like it would any other image.
-    -->
-    <!-- <img src="/retrieve?_id=1234" style="max-width: 1000px" /> -->
-
-    <!-- client.js uses this section to display some information -->
-    <section id="messages"></section>
-
-    <section id="fileStore">
-    {{#if files}}
-    <h2>Input Files:</h2>
-      {{#each files}}
-       <div class="fileDisplay">
+        This form is entirely capable of sending a file to the server
+        without any javascript. We do, though, have custom javascript
+        running in the client.js script that overrides what the form
+        would do. This will prevent our form from navigating us to a
+        new page when the server responds to the POST request.
+      -->
+      <div>
+        <form ref='uploadForm' 
+          id='uploadForm' 
+          action='/upload' 
+          method='post' 
+          encType="multipart/form-data">
+          <div class="container">
+            <div class="drop-area" id="dropArea">
+              <h3 class="drop-text">Drag and Drop files here (in progress)</h3>
+              <input type="file" id="fileInput" name="sampleFile" />
+            </div>
+          </div>
+            <input class='uploading' type='submit' value='Upload' />
+        </form> 
         
-          <img src="/assets/img/excel.png" alt="excel logo" class="domoFace">
-          <h3 class="domoName">Name: {{this.name}}</h3>
-       </div>
-       {{/each}}
-    {{else}}
-      <h3 class="emptyFiles">No files yet!</h3>
-    {{/if}}
-  </section>
+        <!-- Below is a standard html form that simply makes a GET request
+          to the server. Notice that it has an input called _id. Because of
+          how html forms work by default, this will be serialized into the
+          x-http-form-urlencoded format when the submit button is pressed.
+
+          Based on how the server responds (in the Content-Disposition header)
+          our browser will either download the given file or will redirect
+          to show us the media that we recieved.
+
+          It would also be possible to use FETCH to request a number of
+          files from the server and do things like generate image tags for
+          any pngs. 
+        -->
+        <br>
+
+        <form ref='retrieveForm' 
+          id='retrieveForm' 
+          action='/retrieve' 
+          method='get'>
+          <label for='fileName'>Retrieve File By ID: </label>
+          <input name='_id' type='text' />
+          <input type='submit' value='Search' />
+        </form>
+
+        <br>
+
+        <form ref='searchForm' 
+          id='searchForm' 
+          action='/search' 
+          method='get'>
+          <label for='fileName'>Search Files For: </label>
+          <input name='_id' type='text' />
+          <input type='submit' value='Search' />
+        </form>
+
+        <br>
+
+        <!-- If a user uploaded an image, it is entirely possible for us
+          to display that image using an img tag. The example below assumes
+          that the database has an image with an _id of 1234. If that image
+          exists, the img tag will display it in the page like any other
+          image since the server sends it back like it would any other image.
+        -->
+        <!-- <img src="/retrieve?_id=1234" style="max-width: 1000px" /> -->
+
+        <!-- client.js uses this section to display some information -->
+        <section id="messages"></section>
+
+        <section id="fileStore">
+        {{#if files}}
+        <h2>Input Files:</h2>
+          {{#each files}}
+          <div class="fileDisplay">
+            
+              <img src="/assets/img/excel.png" alt="excel logo" class="domoFace">
+              <h3 class="domoName">Name: {{this.name}}</h3>
+          </div>
+          {{/each}}
+        {{else}}
+          <h3 class="emptyFiles">No files yet!</h3>
+        {{/if}}
+      </section>
+    </div>
+
+    <div class="border-right">
+      <h3>Want to be Ad free? Click here to upgrade:</h3>
+    </div>
+   </div>
 </body>
 </html>
