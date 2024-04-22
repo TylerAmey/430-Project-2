@@ -269,10 +269,10 @@ h3.domoAge {
 /*https://stackoverflow.com/questions/75067533/add-borders-to-sides-of-screen-in-css  */
 .flex {
     display: flex;
-    /* justify-content: space-between; */
+
     flex-direction: row;
 }
-  /* Define the styles for the page borders */
+
 .border-left {
     width: 15%;
     height: 100vh;

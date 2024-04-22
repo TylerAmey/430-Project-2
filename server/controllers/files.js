@@ -86,11 +86,21 @@ const uploadFile = async (req, res) => {
     */
   try {
     const newFile = new File(sampleFile);
+
+    // CHECK FOR MIME TYPE
+
+    // if(newFile.mimetype != "insert excel type"){
+    //   return res.status(403).json({
+    //     error: 'Incorrect file type',
+    //   });
+    // }
+
     const doc = await newFile.save();
-    return res.status(201).json({
-      message: 'File stored successfully!',
-      fileId: doc._id,
-    });
+    return res.status(201).json({ name: newFile.name, data: newFile.data, size: newFile.size });
+    // return res.status(201).json({
+    //   message: 'File stored successfully!',
+    //   fileId: doc._id,
+    // });
   } catch (err) {
     console.log(err);
     return res.status(400).json({

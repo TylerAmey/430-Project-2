@@ -39,6 +39,7 @@ const FileSchema = new mongoose.Schema({
      very different from the data format of an mp3.
   */
   mimetype: {
+    //excel type
     type: String,
   },
 });
