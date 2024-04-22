@@ -60,7 +60,7 @@ const signup = async (req, res) => {
 const deleteAccount = async (req, res) => {
   res.accounts.deleteOne( {username: req.session.account.username});
   req.session.destroy();
-  return res.redirect('/login');
+  return res.redirect('/signup');
 };
 
 module.exports = {
