@@ -4,7 +4,6 @@ const { Account } = models;
 
 const loginPage = (req, res) => res.render('login');
 
-
 const logout = (req, res) => {
   req.session.destroy();
   return res.redirect('/');
@@ -58,9 +57,9 @@ const signup = async (req, res) => {
 };
 
 const deleteAccount = async (req, res) => {
-  res.accounts.deleteOne( {username: req.session.account.username});
+  await Account.deleteOne( {username: req.session.account.username});
   req.session.destroy();
-  return res.redirect('/signup');
+  return res.redirect('/login');
 };
 
 module.exports = {

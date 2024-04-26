@@ -11,6 +11,12 @@ const FileSchema = new mongoose.Schema({
      to whatever the name of the file is on the users computer.
      The name will include the file extension.
   */
+
+  //  store owner
+  user: {
+    type: String,
+  },
+   
   name: {
     type: String,
   },

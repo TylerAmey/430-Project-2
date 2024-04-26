@@ -9,11 +9,12 @@ const { forEach } = require('underscore');
 const File = require('../models/filestore.js');
 var XLSX = require("xlsx");
 const fs = require('fs');
+const { json } = require('body-parser');
 
 // A simple handler for rendering the upload page
 const uploadPage = async (req, res) => {
   try {
-    const query = { owner: req.session.account._id };
+    const query = { user: req.session.account._id };
     console.log(query);
     const docs = await File.find(query).select('name').lean().exec();
     console.log(docs);
@@ -61,6 +62,9 @@ const uploadFile = async (req, res) => {
     */
   const { sampleFile } = req.files;
 
+  // Add to sampleFile
+  sampleFile.user = req.session.account._id;
+
   /* If you uncomment the line below and run the code, you will be
        able to see what an incoming file object looks like. This can
        be useful as it shows you what data there is to possibly store
@@ -84,30 +88,46 @@ const uploadFile = async (req, res) => {
        For testing purposes we will also return the _id of the file in
        the database.
     */
-  try {
+
+  // try {
     const newFile = new File(sampleFile);
 
     // CHECK FOR MIME TYPE
+    let acceptedMimeTypes = ["application/vnd.ms-excel","application/msexcel","application/x-msexcel","application/x-ms-excel","application/x-excel","application/x-dos_ms_excel","application/xls","application/x-xls","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];
+    let mimeTypeFound = false;
 
-    // if(newFile.mimetype != "insert excel type"){
-    //   return res.status(403).json({
-    //     error: 'Incorrect file type',
-    //   });
-    // }
+    for(i=0; i < acceptedMimeTypes.length; i++){
+      if(newFile.mimetype == acceptedMimeTypes[i]){
+        mimeTypeFound = true;
+      }
+    }
+    if(!mimeTypeFound){
+      //correct error code?
+      return res.status(403).json({
+        error: 'Incorrect file type',
+      });
+    }
 
     const doc = await newFile.save();
-    return res.status(201).json({ name: newFile.name, data: newFile.data, size: newFile.size });
+    return res.status(201).json({ 
+      user: req.session.account._id ,
+      name: doc.name, 
+      data: doc.data, 
+      size: doc.size, 
+      fileId: doc._id,
+    });
     // return res.status(201).json({
     //   message: 'File stored successfully!',
     //   fileId: doc._id,
     // });
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json({
-      error: 'Something went wrong uploading file!',
-    });
-  }
-};
+
+  // } catch (err) {
+  //   console.log(err);
+  //   return res.status(400).json({
+  //     error: 'Something went wrong uploading file!',
+  //   });
+  // }
+  };
 
 /* This handler function will enable users to retrieve a file from the
    database given the correct _id. Because of how our router is setup,
@@ -208,11 +228,11 @@ const searchFile = async (req, res) =>{
   }
   
   let doc;
-  const query = { owner: req.session.account._id };
+  const query = { user: req.session.account._id };
 
   //retrieve the files. I need to find how to do this when grabbing all files
   try {
-    docs = await File.find(query).select('name').lean().exec();
+    doc = await File.find(query).select('data').lean().exec();
   } catch (err) {
     console.log(err);
     return res.status(400).json({ error: 'Something went wrong retrieving files!' });
@@ -230,15 +250,29 @@ const searchFile = async (req, res) =>{
 
   //get arrays for the sheets we find
   let sheets = [];
+  console.log("data: " + doc.data);
 
-  for(let i=0; i < doc.data.length; i++){
+  for(let i=0; i < doc.length; i++){
+    let workbook = XLSX.read(doc[i].data, {type: "buffer"});
+    let sheetNames = workbook.SheetNames;
+    console.log(sheetNames);
+    console.log(workbook);
     //convert to json for ease of use
-    var jsonSheet = XLSX.utils.sheet_to_json(sheet,{blankrows : false, defval: ''});
-
+    let jsonSheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[i]], {blankrows: false});
+    //testing
+    // https://stackoverflow.com/questions/51942159/reading-first-n-lines-of-sheet-using-xlsx-module
+    // let jsonSheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[i]], {
+    //   header: 1,
+    //   defval: '',
+    //   blankrows: true
+    // });
+    console.log(jsonSheet);
     try {
       //search for the term. possibly make everything lowercase?
       const jsonData = JSON.parse(jsonSheet);
+      console.log(`Sheet: ${jsonData}`);
       const searchString = req.query._id;
+      console.log(`Search term: ${searchString}`);
       const found = searchJSON(jsonData, searchString);
       //if found add
       if (found) {

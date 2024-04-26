@@ -11,7 +11,8 @@ const router = (app) => {
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
-  app.post('/deleteAccount', mid.requiresLogin, controllers.Account.deleteAccount);
+  //Should this be get?
+  app.get('/deleteAccount', mid.requiresLogin, controllers.Account.deleteAccount);
 
   app.post('/upload', mid.requiresLogin, controllers.Files.uploadFile);
   app.get('/upload', mid.requiresLogin, controllers.Files.uploadPage);
