@@ -221,17 +221,26 @@ nav:nth-child(1) {
     background-color: #5ced73;
 }
 
-img.domoFace {
-    margin-left: 25px;
-    margin-right: 10px;
+/* #fileStore{
+    text-align: center;
+} */
+
+.fileDisplay{
+    background-color: #26d86b;
+    border-radius: 20px;
+    margin:20px;
+    width: 250px;
+    height: 100px;
+}
+
+img.excelLogo {
     height: 50px;
     width: 50px;
     border-radius: 4px;
-    margin-top:10px;
     float:left;
 }
 
-h3.emptyDomo {
+h3.emptyFiles {
     width: 400px;
     font-size: 1.5em;
     margin: 0 auto;
@@ -239,12 +248,12 @@ h3.emptyDomo {
     margin-top: 18px;
 }
 
-h3.domoName {
+h3.fileName {
     float:left;
     width: 200px;
     font-weight: bold;
-    padding-left: 65px;
     font-size: 1.5em;
+    text-align: center;
 }
 
 h3.domoAge {

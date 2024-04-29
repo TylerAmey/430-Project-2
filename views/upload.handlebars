@@ -6,10 +6,12 @@
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
-  <nav><a href="/login"><img id="logo" src="/assets/img/excel.png" alt="face logo"/></a>
+  <nav>
+    <a href="/login"><img id="logo" src="/assets/img/excel.png" alt="face logo"/></a>
     <div class="navlink"><a href="/logout">Log out</a></div>
     <div class="navlink"><a href="/deleteAccount">Delete Account</a></div>
     <div class="navlink"><a href="/upgrade">Upgrade</a></div>
+    <h2></h2>
   </nav>
   <div class="flex">
     <div class="border-left">
@@ -38,7 +40,7 @@
         would do. This will prevent our form from navigating us to a
         new page when the server responds to the POST request.
       -->
-      <div class="upload-content">
+    <div class="upload-content">
         <form ref='uploadForm' 
           id='uploadForm' 
           action='/upload' 
@@ -68,14 +70,14 @@
         -->
         <br>
 
-        <form ref='retrieveForm' 
+        {{!-- <form ref='retrieveForm' 
           id='retrieveForm' 
           action='/retrieve' 
           method='get'>
           <label for='fileName'>Retrieve File By ID: </label>
           <input name='_id' type='text' />
           <input type='submit' value='Search' />
-        </form>
+        </form> --}}
 
         <br>
 
@@ -84,36 +86,36 @@
           action='/search' 
           method='get'>
           <label for='fileName'>Search Files For: </label>
-          <input name='_id' type='text' />
+          <input name='_id' type='text' placeholder="search term"/>
           <input type='submit' value='Search' />
         </form>
 
         <br>
 
-        <!-- If a user uploaded an image, it is entirely possible for us
-          to display that image using an img tag. The example below assumes
-          that the database has an image with an _id of 1234. If that image
-          exists, the img tag will display it in the page like any other
-          image since the server sends it back like it would any other image.
-        -->
-        <!-- <img src="/retrieve?_id=1234" style="max-width: 1000px" /> -->
+        <form ref='displayAll' 
+          id='displayAll' 
+          action='/upload' 
+          method='get'>
+          <input type='submit' value='Show All Files' />
+        </form>
 
-        <!-- client.js uses this section to display some information -->
+        <br>
         <section id="messages"></section>
 
-        <section id="fileStore">
+      <section id="fileStore">
         {{#if files}}
-        <h2>Input Files:</h2>
+        <h2>Your Files:</h2>
           {{#each files}}
           <div class="fileDisplay">
-              <img src="/assets/img/excel.png" alt="excel logo" class="domoFace">
-              <h3 class="domoName">Name: {{this.name}}</h3>
+              <img src="/assets/img/excel.png" alt="excel logo" class="excelLogo" onclick="{{this.data}}"> 
+              <h3 class="fileName">Name: {{this.name}}</h3> 
           </div>
           {{/each}}
         {{else}}
-          <h3 class="emptyFiles">No files yet!</h3>
+          <h3 class="emptyFiles">No files!</h3>
         {{/if}}
       </section>
+
     </div>
 
     <div class="border-right">
