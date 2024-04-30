@@ -16,7 +16,7 @@ const FileSchema = new mongoose.Schema({
   user: {
     type: String,
   },
-   
+
   name: {
     type: String,
   },
@@ -45,7 +45,7 @@ const FileSchema = new mongoose.Schema({
      very different from the data format of an mp3.
   */
   mimetype: {
-    //excel type
+    // excel type
     type: String,
   },
 });

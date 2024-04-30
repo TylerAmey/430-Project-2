@@ -40,30 +40,6 @@ const handleSignup = (e) => {
     return false;
 }
 
-const handleResetPass = (e) => {
-    e.preventDefault();
-    helper.hideError();
-
-    const username = e.target.querySelector('#user').value;
-    const pass = e.target.querySelector('#pass').value;
-    const pass2 = e.target.querySelector('#pass2').value;
-    const pass3 = e.target.querySelector('#pass3').value;
-
-    if(!username || !pass || !pass2 || !pass3) {
-        helper.handleError('Username or password is empty!');
-        return false;
-    }
-
-    if(pass2 !== pass){
-        helper.handleError('Passwords do not match!');
-        return false;
-    }
-
-    helper.sendPost(e.target.action, {username, pass, pass2});
-    return false;
-}
-
-
 
 
 const LoginWindow = (props) => {
@@ -104,33 +80,10 @@ const SignupWindow = (props) => {
     );
 };
 
-const ResetPassWindow = (props) => {
-    return (
-        <form id="resetForm"
-            name="resetForm"
-            onSubmit={handleResetPass}
-            action="/resetPass"
-            method="POST"
-            className="mainForm"
-        >
-            <label htmlFor="username">Username: </label>
-            <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">Old Password: </label>
-            <input id="pass" type="password" name="pass" placeholder="password" />
-            <label htmlFor="pass">New Password: </label>
-            <input id="pass2" type="password" name="pass2" placeholder="password" />
-            <label htmlFor="pass">New Password: </label>
-            <input id="pass3" type="password" name="pass3" placeholder="retype password" />
-            <input id="resetPassButton" className="formSubmit" type="submit" value="Sign up" />
-        </form>
-    );
-};
-
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
     const resetPassButton = document.getElementById('resetPassButton');
-
     const root = createRoot(document.getElementById('content'));
 
     loginButton.addEventListener('click', (e) => {
@@ -142,12 +95,6 @@ const init = () => {
     signupButton.addEventListener('click', (e) => {
         e.preventDefault();
         root.render( <SignupWindow /> );
-        return false;
-    });
-
-    resetPassButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        root.render( <ResetPassWindow /> );
         return false;
     });
 

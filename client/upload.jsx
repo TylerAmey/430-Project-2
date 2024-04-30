@@ -3,9 +3,9 @@ const React = require('react');
 const {createRoot} = require('react-dom/client');
 
 const handleDelete = (e) => {
-    console.log('test');
     e.preventDefault();
     helper.hideError();
+    
     helper.sendPost(e.target.action);
     return false;
 }
@@ -14,12 +14,11 @@ const handleResetPass = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const username = e.target.querySelector('#user').value;
     const pass = e.target.querySelector('#pass').value;
     const pass2 = e.target.querySelector('#pass2').value;
     const pass3 = e.target.querySelector('#pass3').value;
 
-    if(!username || !pass || !pass2 || !pass3) {
+    if(!pass || !pass2 || !pass3) {
         helper.handleError('Username or password is empty!');
         return false;
     }
@@ -29,7 +28,7 @@ const handleResetPass = (e) => {
         return false;
     }
 
-    helper.sendPost(e.target.action, {username, pass, pass2});
+    helper.sendPost(e.target.action, {pass, pass2, pass3});
     return false;
 }
 
@@ -37,21 +36,15 @@ const handlePremiumSignup = (e) => {
     e.preventDefault();
     helper.hideError();
 
-    const username = e.target.querySelector('#user').value;
-    const pass = e.target.querySelector('#pass').value;
-    const pass2 = e.target.querySelector('#pass2').value;
+    const name = e.target.querySelector('#name').value;
+    const billingAddress = e.target.querySelector('#address').value;
 
-    if(!username || !pass || !pass2) {
-        helper.handleError('Username or password is empty!');
+    if(!name || !billingAddress) {
+        helper.handleError('Name or billing address is empty!');
         return false;
     }
 
-    if(pass !== pass2){
-        helper.handleError('Passwords do not match!');
-        return false;
-    }
-
-    helper.sendPost(e.target.action, {username, pass, pass2});
+    helper.sendPost(e.target.action, {name, billingAddress});
     return false;
 }
 
@@ -99,11 +92,6 @@ const handleNonPremium = (e) => {
     return false;
 }
 
-
-
-
-
-
 const DeleteWindow = (props) => {
     return (
         <form id="deleteForm"
@@ -141,10 +129,10 @@ const ResetPassWindow = (props) => {
 
 const PremiumSignupWindow = (props) => {
     return (
-        <form id="premiumSignUp"
-            name="premiumSignUp"
+        <form id="premiumSignup"
+            name="premiumSignup"
             onSubmit={handlePremium}
-            action="/premiumSignUp"
+            action="/premiumSignup"
             method="POST"
             className="mainForm"
         >
@@ -166,6 +154,7 @@ const PremiumWindow = (props) => {
             method="POST"
             className="mainForm"
         >
+            <img src="/assets/img/excel.png" alt="excel icon"></img>
         </form>
     );
 };
@@ -180,9 +169,9 @@ const NonPremiumWindow = (props) => {
             className="mainForm"
         >
             <h2>Upgrade to Premium to block ads!</h2>
-            <img></img>
-            <img></img>
-            <img></img>
+            <img src="/assets/img/insert.png" alt="download icon"></img>
+            <img src="/assets/img/insert.png" alt="download icon"></img>
+            <img src="/assets/img/insert.png" alt="download icon"></img>
         </form>
     );
 };
@@ -193,6 +182,9 @@ const init = () => {
     const premiumSignUpButton = document.getElementById('premiumSignUpButton');
 
     const root = createRoot(document.getElementById('content'));
+    
+    // const leftSide = createRoot(document.getElementById('border-left'));
+    // const rightSide = createRoot(document.getElementById('border-right'));
 
     deleteButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -207,12 +199,11 @@ const init = () => {
     });
 
     resetPassButton.addEventListener('click', (e) => {
+        console.log("test");
         e.preventDefault();
         root.render( <ResetPassWindow /> );
         return false;
     });
-
-    root.render( <LoginWindow />);
 };
 
 window.onload = init;

@@ -7,7 +7,7 @@ const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const expressHandlebars = require('express-handlebars');
-//file
+// file
 const fileUpload = require('express-fileupload');
 
 const helmet = require('helmet');
@@ -36,7 +36,7 @@ redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
 redisClient.connect().then(() => {
   const app = express();
-  //file
+  // file
   app.use(fileUpload());
 
   app.use(helmet());

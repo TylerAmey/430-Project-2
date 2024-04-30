@@ -1,25 +1,27 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>Files</title>
+  <title>Excel-ify</title>
   <link rel="shortcut icon" href="/assets/img/excel.png"/>
   <link rel="stylesheet" type="text/css" href="/assets/style.css"/>
 </head>
 <body>
   <nav>
-    <a href="/login"><img id="logo" src="/assets/img/excel.png" alt="face logo"/></a>
+    <img id="logo" src="/assets/img/excel.png" alt="face logo"/>
     <div class="navlink"><a href="/logout">Log out</a></div>
     <div class="navlink"><a id="deleteButton" href="/deleteAccount">Delete Account</a></div>
-    <div class="navlink"><a id="resetPassButton" href="/resetPass">Reset Password</a></div>
-    <div class="navlink"><a id="premiumSignUpButton" href="/upgrade">Premium</a></div>
+    <div class="navlink"><a id="resetPassButton" href="/resetpass">Reset Password</a></div>
+    <div class="navlink"><a id="premiumSignUpButton" href="/premiumSignup">Premium</a></div>
     <h2></h2>
   </nav>
   <div class="flex">
     <div class="border-left">
     </div>
     <div class="upload-content">
-      <div id="injectedContent">
-      </div>
+
+      <section id="content">
+      </section>
+
         <form ref='uploadForm' 
           id='uploadForm' 
           action='/upload' 
@@ -62,7 +64,7 @@
           id='displayAll' 
           action='/upload' 
           method='get'>
-          <input class="buttonStyle" type='submit' value='Show All Files' />
+          <input class="buttonStyle" type='submit' value='Show your Files' />
         </form>
 
         <br>
@@ -71,7 +73,7 @@
         <h2>Your Files:</h2>
           {{#each files}}
           <div class="fileDisplay">
-              <img src="/assets/img/excel.png" alt="excel logo" class="excelLogo" onclick="{{this.data}}"> 
+              <a href="{{this.data}}" download><img src="/assets/img/downloadicon.png" alt="download icon" class="excelLogo"></a> 
               <h3 class="fileName">Name: {{this.name}}</h3> 
           </div>
           {{/each}}
@@ -84,6 +86,8 @@
 
     <div class="border-right">
     </div>
+
    </div>
+   <script src="/assets/uploadBundle.js"></script>
 </body>
 </html>

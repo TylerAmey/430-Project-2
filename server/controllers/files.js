@@ -74,13 +74,7 @@ const uploadFile = async (req, res) => {
     const doc = await newFile.save();
 
     //Add the file
-    return res.status(201).json({ 
-      user: req.session.account._id ,
-      name: doc.name, 
-      data: doc.data, 
-      size: doc.size, 
-      fileId: doc._id,
-    });
+    return res.render('upload', {files: docs});
     // return res.status(201).json({
     //   message: 'File stored successfully!',
     //   fileId: doc._id,
@@ -202,6 +196,8 @@ const searchFile = async (req, res) =>{
 //return for later use (displaying which sheets it was found in)
   return res.render('upload', {files: sheets});
 }
+
+
 
 module.exports = {
   uploadPage,

@@ -57,7 +57,7 @@ const signup = async (req, res) => {
 };
 
 const deleteAccount = async (req, res) => {
-  await Account.deleteOne( {username: req.session.account.username});
+  await Account.deleteOne({ username: req.session.account.username });
   req.session.destroy();
   return res.redirect('/');
 };
@@ -75,21 +75,21 @@ const resetPass = async (req, res) => {
     return res.status(400).json({ error: 'Passwords do not match!' });
   }
 
-  //get current info
+  // get current info
   const query = { user: req.session.account._id };
   const docs = await Account.find(query).select('username password').lean().exec();
 
-  if(pass != docs.password){
+  if (pass !== docs.password) {
     return res.status(401).json({ error: 'Incorrect password' });
   }
 
-  if(pass != pass2){
+  if (pass !== pass2) {
     return res.status(401).json({ error: 'Use a new password!' });
   }
 
   try {
     const hash = await Account.generateHash(pass2);
-    await Account.findByIdAndUpdate(query, {password: hash});
+    await Account.findByIdAndUpdate(query, { password: hash });
     return res.json({ redirect: '/upload' });
   } catch (err) {
     console.log(err);
@@ -100,6 +100,48 @@ const resetPass = async (req, res) => {
   }
 };
 
+const togglePremium = async (req, res) => {
+  const name = `${req.body.name}`;
+  const billingAddress = `${req.body.billingAddress}`;
+  const userId = { user: req.session.account._id };
+  const query = { username: req.session.account.username };
+  const docs = await Account.find(query).select('premium').lean().exec();
+  console.log(userId);
+  console.log(query);
+  console.log(docs);
+  if (!docs.premium) {
+    try {
+      const doc = await Account.findByIdAndUpdate(
+        userId.user,
+        { premium: true },
+        { name },
+        { billingAddress },
+      ).exec();
+
+      req.session.account = Account.toAPI(doc);
+      return res.json({ redirect: '/upload' });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Premium not updated' });
+    }
+  } else {
+    try {
+      const doc = await Account.findByIdAndUpdate(
+        userId.user,
+        { premium: false },
+        { name },
+        { billingAddress },
+      ).exec();
+
+      req.session.account = Account.toAPI(doc);
+      return res.json({ redirect: '/upload' });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ error: 'Premium not updated' });
+    }
+  }
+};
+
 module.exports = {
   loginPage,
   login,
@@ -107,4 +149,5 @@ module.exports = {
   signup,
   deleteAccount,
   resetPass,
+  togglePremium,
 };

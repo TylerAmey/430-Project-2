@@ -33,13 +33,21 @@ const AccountSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  premium:{
+  premium: {
     type: Boolean,
     default: false,
   },
   createdDate: {
     type: Date,
     default: Date.now,
+  },
+  name: {
+    type: String,
+    required: false,
+  },
+  billingAddress: {
+    type: String,
+    required: false,
   },
 });
 

@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        // app: './client/upload.jsx',
+        upload: './client/upload.jsx',
         login: './client/login.jsx',
     },
     module: {
