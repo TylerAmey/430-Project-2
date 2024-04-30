@@ -9,38 +9,17 @@
   <nav>
     <a href="/login"><img id="logo" src="/assets/img/excel.png" alt="face logo"/></a>
     <div class="navlink"><a href="/logout">Log out</a></div>
-    <div class="navlink"><a href="/deleteAccount">Delete Account</a></div>
-    <div class="navlink"><a href="/upgrade">Upgrade</a></div>
+    <div class="navlink"><a id="deleteButton" href="/deleteAccount">Delete Account</a></div>
+    <div class="navlink"><a id="resetPassButton" href="/resetPass">Reset Password</a></div>
+    <div class="navlink"><a id="premiumSignUpButton" href="/upgrade">Premium</a></div>
     <h2></h2>
   </nav>
   <div class="flex">
     <div class="border-left">
-      <h3>Want to be Ad free? Click here to upgrade:</h3>
     </div>
-
-        <!-- Below is a simple html form capable of sending files to the
-        server. You'll notice two new things. The first is that the
-        encoding type of the form is set to "multipart/formdata". This
-        is different from the standard encoding type that html forms
-        use (x-http-form-urlencoded). The urlencoded format does not
-        support things like files. The express-fileupload plugin on
-        our server will be looking for multipart/formdata.
-
-        You'll also notice that the form has an input of type "file".
-        This is the input that allows you to select a file off your
-        machine. Importantly we have given the input a name as well.
-        In this case "sampleFile". This name is arbitrary and could
-        be changed to anything. However, our server will specifically
-        check for req.files.sampleFile and so if we wanted to change
-        it we would also need to change what the server is looking for.
-
-        This form is entirely capable of sending a file to the server
-        without any javascript. We do, though, have custom javascript
-        running in the client.js script that overrides what the form
-        would do. This will prevent our form from navigating us to a
-        new page when the server responds to the POST request.
-      -->
     <div class="upload-content">
+      <div id="injectedContent">
+      </div>
         <form ref='uploadForm' 
           id='uploadForm' 
           action='/upload' 
@@ -52,22 +31,9 @@
               <input type="file" id="fileInput" name="sampleFile" />
             </div>
           </div>
-            <input class='uploading' type='submit' value='Upload' />
+            <input class="buttonStyle" class='uploading' type='submit' value='Upload' />
         </form> 
-        
-        <!-- Below is a standard html form that simply makes a GET request
-          to the server. Notice that it has an input called _id. Because of
-          how html forms work by default, this will be serialized into the
-          x-http-form-urlencoded format when the submit button is pressed.
 
-          Based on how the server responds (in the Content-Disposition header)
-          our browser will either download the given file or will redirect
-          to show us the media that we recieved.
-
-          It would also be possible to use FETCH to request a number of
-          files from the server and do things like generate image tags for
-          any pngs. 
-        -->
         <br>
 
         {{!-- <form ref='retrieveForm' 
@@ -87,7 +53,7 @@
           method='get'>
           <label for='fileName'>Search Files For: </label>
           <input name='_id' type='text' placeholder="search term"/>
-          <input type='submit' value='Search' />
+          <input class="buttonStyle" class="buttonStyle" type='submit' value='Search' />
         </form>
 
         <br>
@@ -96,12 +62,10 @@
           id='displayAll' 
           action='/upload' 
           method='get'>
-          <input type='submit' value='Show All Files' />
+          <input class="buttonStyle" type='submit' value='Show All Files' />
         </form>
 
         <br>
-        <section id="messages"></section>
-
       <section id="fileStore">
         {{#if files}}
         <h2>Your Files:</h2>
@@ -119,7 +83,6 @@
     </div>
 
     <div class="border-right">
-      <h3>Want to be Ad free? Click here to upgrade:</h3>
     </div>
    </div>
 </body>

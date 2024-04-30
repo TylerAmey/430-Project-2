@@ -24,7 +24,30 @@ const uploadFile = async (req, res) => {
     return res.status(400).json({ error: 'No files were uploaded' });
   }
 
+  console.log(req.files);
+
   const { sampleFile } = req.files;
+
+    //Check for file name to see if it's a repeat
+    let docs;
+    try{
+      const query = { user: req.session.account._id };
+      docs = await File.find(query).select('name').lean().exec();
+    }catch{
+      console.log(err);
+      return res.status(500).json({ error: 'Error retrieving files!' });
+    }
+  
+    for(let i=0; i < docs.length; i++){
+      console.log(docs);
+      console.log(sampleFile.name);
+      console.log(docs[i].name);
+      if(docs[i].name == sampleFile.name){
+        return res.status(403).json({
+          error: 'File name already exists',
+         });
+      }
+    }
 
   // Add to sampleFile
   sampleFile.user = req.session.account._id;
@@ -49,27 +72,6 @@ const uploadFile = async (req, res) => {
     }
 
     const doc = await newFile.save();
-
-    //Check for file name to see if it's a repeat
-    let docs;
-    try{
-      const query = { user: req.session.account._id };
-      docs = await File.find(query).select('name').lean().exec();
-    }catch{
-      console.log(err);
-      return res.status(500).json({ error: 'Error retrieving files!' });
-    }
-
-    for(let i=0; i < docs.length; i++){
-      console.log(docs);
-      console.log(docs[i]);
-      console.log(docs[i].name);
-      if(docs[i].name == doc.name){
-        return res.status(403).json({
-          error: 'File name already exists',
-        });
-      }
-    }
 
     //Add the file
     return res.status(201).json({ 

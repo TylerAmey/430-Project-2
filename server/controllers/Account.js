@@ -59,7 +59,45 @@ const signup = async (req, res) => {
 const deleteAccount = async (req, res) => {
   await Account.deleteOne( {username: req.session.account.username});
   req.session.destroy();
-  return res.redirect('/login');
+  return res.redirect('/');
+};
+
+const resetPass = async (req, res) => {
+  const pass = `${req.body.pass}`;
+  const pass2 = `${req.body.pass2}`;
+  const pass3 = `${req.body.pass3}`;
+
+  if (!pass || !pass2 || !pass3) {
+    return res.status(400).json({ error: 'All fields are required!' });
+  }
+
+  if (pass2 !== pass3) {
+    return res.status(400).json({ error: 'Passwords do not match!' });
+  }
+
+  //get current info
+  const query = { user: req.session.account._id };
+  const docs = await Account.find(query).select('username password').lean().exec();
+
+  if(pass != docs.password){
+    return res.status(401).json({ error: 'Incorrect password' });
+  }
+
+  if(pass != pass2){
+    return res.status(401).json({ error: 'Use a new password!' });
+  }
+
+  try {
+    const hash = await Account.generateHash(pass2);
+    await Account.findByIdAndUpdate(query, {password: hash});
+    return res.json({ redirect: '/upload' });
+  } catch (err) {
+    console.log(err);
+    if (err.code === 11000) {
+      return res.status(40).json({ error: 'Username already in use!' });
+    }
+    return res.status(500).json({ error: 'An error occured!' });
+  }
 };
 
 module.exports = {
@@ -68,4 +106,5 @@ module.exports = {
   logout,
   signup,
   deleteAccount,
+  resetPass,
 };

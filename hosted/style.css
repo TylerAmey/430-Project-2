@@ -4,6 +4,16 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    background-color: #e0f5e3;
+}
+
+h1{
+    padding-top: 100px;
+    font-size: 100px;
+    font-weight: bold;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+    color:#2f9e54;
 }
 
 #logo {
@@ -38,13 +48,13 @@ nav:nth-child(1) {
     text-decoration: none;
     padding: 5px;
     border-radius: 4px;
-    background-color: #5ced73;
+    background-color: #2f9e54;
     transition: background-color 0.4s ease;
 }
 
 .navlink a:hover {
     transition: background-color 0.8s ease;
-    background-color: #5ced73;
+    background-color: #27f149;
 }
 
 .domoForm {
@@ -94,7 +104,7 @@ nav:nth-child(1) {
     height: 300px;
     width: 350px;
     margin: 0 auto;
-    padding-top: 350px;
+    padding-top: 50px;
     font-size: 1.2em;
 }
 
@@ -341,3 +351,22 @@ h3.domoAge {
   .file-item {
     margin-bottom: 5px !important;
   }
+
+.buttonStyle {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 2px solid #4CAF50; /* Green border */
+  color: #4CAF50;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.buttonStyle:hover {
+  background-color: #4CAF50; /* Green background */
+  color: #fff; /* White text */
+  border-color: #4CAF50; /* Green border */
+}

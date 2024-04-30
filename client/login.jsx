@@ -40,6 +40,32 @@ const handleSignup = (e) => {
     return false;
 }
 
+const handleResetPass = (e) => {
+    e.preventDefault();
+    helper.hideError();
+
+    const username = e.target.querySelector('#user').value;
+    const pass = e.target.querySelector('#pass').value;
+    const pass2 = e.target.querySelector('#pass2').value;
+    const pass3 = e.target.querySelector('#pass3').value;
+
+    if(!username || !pass || !pass2 || !pass3) {
+        helper.handleError('Username or password is empty!');
+        return false;
+    }
+
+    if(pass2 !== pass){
+        helper.handleError('Passwords do not match!');
+        return false;
+    }
+
+    helper.sendPost(e.target.action, {username, pass, pass2});
+    return false;
+}
+
+
+
+
 const LoginWindow = (props) => {
     return (
         <form id="loginForm"
@@ -54,9 +80,6 @@ const LoginWindow = (props) => {
             <label htmlFor="pass">Password: </label>
             <input id="pass" type="password" name="pass" placeholder="password" />
             <input className="formSubmit" type="submit" value="Sign in" />
-            <label htmlFor="username">Username: </label>
-            <button className="resetPassword" type="reset" value="Reset Password">Reset Password</button>
-
         </form>
     );
 };
@@ -92,10 +115,12 @@ const ResetPassWindow = (props) => {
         >
             <label htmlFor="username">Username: </label>
             <input id="user" type="text" name="username" placeholder="username" />
-            <label htmlFor="pass">New Password: </label>
+            <label htmlFor="pass">Old Password: </label>
             <input id="pass" type="password" name="pass" placeholder="password" />
             <label htmlFor="pass">New Password: </label>
-            <input id="pass2" type="password" name="pass2" placeholder="retype password" />
+            <input id="pass2" type="password" name="pass2" placeholder="password" />
+            <label htmlFor="pass">New Password: </label>
+            <input id="pass3" type="password" name="pass3" placeholder="retype password" />
             <input id="resetPassButton" className="formSubmit" type="submit" value="Sign up" />
         </form>
     );
