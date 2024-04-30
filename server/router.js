@@ -9,13 +9,12 @@ const router = (app) => {
 
   app.post('/resetPass', mid.requiresSecure, mid.requiresLogin, controllers.Account.resetPass);
 
-  app.get('/premiumSignup', mid.requiresSecure, mid.requiresLogin, controllers.Account.togglePremium);
+  app.post('/premiumSignup', mid.requiresSecure, mid.requiresLogin, controllers.Account.togglePremium);
 
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
   // Should this be get?
   app.post('/deleteAccount', mid.requiresLogin, controllers.Account.deleteAccount);
-  app.get('/deleteAccount', mid.requiresLogin, controllers.Account.deleteAccount);
 
   app.post('/upload', mid.requiresLogin, controllers.Files.uploadFile);
   app.get('/upload', mid.requiresLogin, controllers.Files.uploadPage);

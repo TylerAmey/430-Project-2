@@ -6,7 +6,7 @@ const handleDelete = (e) => {
     e.preventDefault();
     helper.hideError();
     
-    helper.sendPost(e.target.action);
+    helper.sendPost(e.target.action, {});
     return false;
 }
 
@@ -97,7 +97,7 @@ const DeleteWindow = (props) => {
         <form id="deleteForm"
             name="deleteForm"
             onSubmit={handleDelete}
-            action="/delete"
+            action="/deleteAccount"
             method="POST"
             className="mainForm"
         >
@@ -131,7 +131,7 @@ const PremiumSignupWindow = (props) => {
     return (
         <form id="premiumSignup"
             name="premiumSignup"
-            onSubmit={handlePremium}
+            onSubmit={handlePremiumSignup}
             action="/premiumSignup"
             method="POST"
             className="mainForm"
@@ -199,7 +199,6 @@ const init = () => {
     });
 
     resetPassButton.addEventListener('click', (e) => {
-        console.log("test");
         e.preventDefault();
         root.render( <ResetPassWindow /> );
         return false;
