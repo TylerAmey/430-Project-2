@@ -59,7 +59,7 @@ const signup = async (req, res) => {
 const deleteAccount = async (req, res) => {
   await Account.deleteOne({ username: req.session.account.username });
   req.session.destroy();
-  return res.redirect('/');
+  return res.json({ redirect: '/upload' });
 };
 
 const resetPass = async (req, res) => {
@@ -77,15 +77,16 @@ const resetPass = async (req, res) => {
 
   // get current info
   const query = { user: req.session.account._id };
-  const docs = await Account.find(query).select('username password').lean().exec();
-
-  if (pass !== docs.password) {
-    return res.status(401).json({ error: 'Incorrect password' });
-  }
+  // const docs = await Account.find(query).select('username password').lean().exec();
 
   if (pass !== pass2) {
     return res.status(401).json({ error: 'Use a new password!' });
   }
+
+  // did not work
+  // if (pass !== docs.password) {
+  //   return res.status(401).json({ error: 'Incorrect password' });
+  // }
 
   try {
     const hash = await Account.generateHash(pass2);
@@ -106,9 +107,7 @@ const togglePremium = async (req, res) => {
   const userId = { user: req.session.account._id };
   const query = { username: req.session.account.username };
   const docs = await Account.find(query).select('premium').lean().exec();
-  console.log(userId);
-  console.log(query);
-  console.log(docs);
+  console.log(docs.premium);
   if (!docs.premium) {
     try {
       const doc = await Account.findByIdAndUpdate(
@@ -142,6 +141,13 @@ const togglePremium = async (req, res) => {
   }
 };
 
+const getUserPremium = async (req, res) => {
+  const query = { username: req.session.account.username };
+  const account = await Account.find(query).select('premium').lean().exec();
+  console.log(account[0].premium);
+  return res.status(200).json({ premium: account[0].premium });
+};
+
 module.exports = {
   loginPage,
   login,
@@ -150,4 +156,5 @@ module.exports = {
   deleteAccount,
   resetPass,
   togglePremium,
+  getUserPremium,
 };

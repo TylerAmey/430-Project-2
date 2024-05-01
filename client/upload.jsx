@@ -1,12 +1,12 @@
 const helper = require('./helper.js');
 const React = require('react');
+const {useState, useEffect} = React;
 const {createRoot} = require('react-dom/client');
 
 const handleDelete = (e) => {
     e.preventDefault();
     helper.hideError();
-    
-    helper.sendPost(e.target.action, {});
+    helper.sendPost(e.target.action);
     return false;
 }
 
@@ -48,6 +48,28 @@ const handlePremiumSignup = (e) => {
     return false;
 }
 
+const handleNonPremium = (e) => {
+    e.preventDefault();
+    helper.hideError();
+
+    const username = e.target.querySelector('#user').value;
+    const pass = e.target.querySelector('#pass').value;
+    const pass2 = e.target.querySelector('#pass2').value;
+
+    if(!username || !pass || !pass2) {
+        helper.handleError('Username or password is empty!');
+        return false;
+    }
+
+    if(pass !== pass2){
+        helper.handleError('Passwords do not match!');
+        return false;
+    }
+
+    helper.sendPost(e.target.action, {username, pass, pass2});
+    return false;
+}
+
 const handlePremium = (e) => {
     e.preventDefault();
     helper.hideError();
@@ -70,27 +92,55 @@ const handlePremium = (e) => {
     return false;
 }
 
-const handleNonPremium = (e) => {
-    e.preventDefault();
-    helper.hideError();
+// const handleUpload = async (e) => {
+//     e.preventDefault();
+//     helper.hideError();
 
-    const username = e.target.querySelector('#user').value;
-    const pass = e.target.querySelector('#pass').value;
-    const pass2 = e.target.querySelector('#pass2').value;
+//     console.log(e.target);
+//     const inputFiles = e.target.querySelector('#sampleFile').files[0];
+//     console.log(inputFiles);
 
-    if(!username || !pass || !pass2) {
-        helper.handleError('Username or password is empty!');
-        return false;
-    }
+//     if(!inputFiles){
+//         helper.handleError('No files were uploaded!')
+//     }
 
-    if(pass !== pass2){
-        helper.handleError('Passwords do not match!');
-        return false;
-    }
+//     const response = await fetch(e.target.action, {
+//         method: 'POST',
+//         body: new FormData(e.target),
+//     });
 
-    helper.sendPost(e.target.action, {username, pass, pass2});
-    return false;
-}
+//     return false;
+// }
+
+// const UploadWindow = (props) => {
+//     return (
+//         <form id='uploadForm' 
+//           name='uploadForm' 
+//           onSubmit={handleUpload}
+//           action='/upload' 
+//           method='POST' 
+//           encType="multipart/form-data"
+//           >
+            
+//             <div class="container">
+//             <div class="drop-area" id="dropArea">
+//               <h3 class="drop-text">Input Files Below</h3>
+//               <input type="file" id="sampleFile" name="sampleFile" />
+//             </div>
+//           </div>
+//             <input class="buttonStyle uploading" type='submit' value='Upload' />
+//         </form> 
+//     );
+// };
+
+const NotFound = () => {
+    return (
+      <div className="not-found">
+        <h2>404 - Not Found</h2>
+        <h3>The page you are looking for does not exist.</h3>
+      </div>
+    );
+  };
 
 const DeleteWindow = (props) => {
     return (
@@ -128,6 +178,7 @@ const ResetPassWindow = (props) => {
 };
 
 const PremiumSignupWindow = (props) => {
+
     return (
         <form id="premiumSignup"
             name="premiumSignup"
@@ -136,17 +187,55 @@ const PremiumSignupWindow = (props) => {
             method="POST"
             className="mainForm"
         >
-            <label htmlFor="name">Name: </label>
-            <input id="name" type="text" name="name" placeholder="name" />
-            <label htmlFor="billingAddress">Billing Address: </label>
-            <input id="address" type="text" name="address" placeholder="address" />
+            <label  htmlFor="name">Name: </label>
+            <input  id="name" type="text" name="name" placeholder="name" />
+            <label  htmlFor="billingAddress">Billing Address: </label>
+            <input  id="address" type="text" name="address" placeholder="address" />
             <input className="formSubmit" type="submit" value="Confirm"/>
         </form>
     );
 };
 
-const PremiumWindow = (props) => {
-    return (
+const AdSpaceWindow = (props) => {
+
+    const [premium, setUserData] = useState(false);
+    let resp;
+
+    useEffect(() => {
+        const fetchPremium = async () => {
+            const response = await fetch('/getUserPremium');
+            const data = await response.json();
+            resp = data;
+            setUserData(data)
+        }
+
+        fetchPremium();
+    }, []);
+    console.log(premium);
+
+    if (premium == false){
+        return (
+            <form id="nonPremium"
+                name="nonPremium"
+                onSubmit={handleNonPremium}
+                action="/upload"
+                method="POST"
+                className="mainForm"
+            >
+                <h3>Upgrade to Premium to block ads!</h3>
+                <img src="/assets/img/insert.png" class ="ad" alt="download icon"></img>
+                <br/>
+                <br/>
+                <img src="/assets/img/insert.png" class ="ad" alt="download icon"></img>
+                <br/>
+                <br/>
+                <img src="/assets/img/insert.png" class ="ad" alt="download icon"></img>
+                <br/>
+                <br/>
+            </form>
+        );
+    }
+    else{
         <form id="premium"
             name="premium"
             onSubmit={handlePremium}
@@ -156,24 +245,7 @@ const PremiumWindow = (props) => {
         >
             <img src="/assets/img/excel.png" alt="excel icon"></img>
         </form>
-    );
-};
-
-const NonPremiumWindow = (props) => {
-    return (
-        <form id="nonPremium"
-            name="nonPremium"
-            onSubmit={handleNonPremium}
-            action="/upload"
-            method="POST"
-            className="mainForm"
-        >
-            <h2>Upgrade to Premium to block ads!</h2>
-            <img src="/assets/img/insert.png" alt="download icon"></img>
-            <img src="/assets/img/insert.png" alt="download icon"></img>
-            <img src="/assets/img/insert.png" alt="download icon"></img>
-        </form>
-    );
+    }
 };
 
 const init = () => {
@@ -182,9 +254,9 @@ const init = () => {
     const premiumSignUpButton = document.getElementById('premiumSignUpButton');
 
     const root = createRoot(document.getElementById('content'));
-    
-    // const leftSide = createRoot(document.getElementById('border-left'));
-    // const rightSide = createRoot(document.getElementById('border-right'));
+
+    const right = createRoot(document.getElementById('border-left'));
+    const left = createRoot(document.getElementById('border-right'));
 
     deleteButton.addEventListener('click', (e) => {
         e.preventDefault();
@@ -203,6 +275,9 @@ const init = () => {
         root.render( <ResetPassWindow /> );
         return false;
     });
+
+    right.render( <AdSpaceWindow /> );
+    left.render( <AdSpaceWindow /> );
 };
 
 window.onload = init;

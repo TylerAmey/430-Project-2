@@ -5,6 +5,7 @@ html, body {
     padding: 0;
     overflow-x: hidden;
     background-color: #e0f5e3;
+    font-family: sans-serif;
 }
 
 h1{
@@ -161,13 +162,13 @@ nav:nth-child(1) {
     display: none;
 }
 
-#domoMessage {
-    top: 250px;
-    width: 250px;
-    height: 650px;
+#excelMessage {
+    height: 400px;
     position: absolute;
     z-index: 200;
-    right: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50px;
     overflow: hidden;
 }
 
@@ -185,50 +186,9 @@ nav:nth-child(1) {
 }
 
 #errorMessage {
-    font-size: 1.2em;
+    font-size: 2em;
     font-weight: bold;
     color: red;
-    font-style: italic;
-}
-
-#domo {
-    z-index: 225;
-    margin-top: -20px;
-    margin-left: 135px;
-    height: 450px;
-    width: 300px;
-    -ms-transform: rotate(330deg);
-    -webkit-transform: rotate(330deg); 
-    transform: rotate(330deg);
-}
-
-#domos {
-    width: 40%;
-    min-width: 400px;
-    border: 2px solid #5ced73;
-    border-radius: 4px;
-    margin: 0 auto;
-    margin-top: 100px;
-}
-
-.domo {
-    width: 95%;
-    margin: 0 auto;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    border: 2px solid #5ced73;
-    border-radius: 4px;
-    background-color: #5ced73;
-    padding: 10px;
-    min-height:60px;
-    overflow: hidden;
-}
-
-.domo:hover {
-    transition: border-color 0.2s ease-out;
-    border-color: rgba(255,255,255, 0.8);
-    transition: background-color 2.6s ease-out;
-    background-color: #5ced73;
 }
 
 /* #fileStore{
@@ -250,6 +210,12 @@ img.excelLogo {
     float:left;
 }
 
+img.ad {
+    width: 50%;
+    border-radius: 4px;
+    float:none;
+}
+
 h3.emptyFiles {
     width: 400px;
     font-size: 1.5em;
@@ -266,22 +232,6 @@ h3.fileName {
     text-align: center;
 }
 
-h3.domoAge {
-    float:right;
-    text-align: left;
-    width: 100px;
-    font-weight: bold;
-    padding-right: 40px;
-    font-size: 1.5em;
-}
-
-.domo:first-child {
-    margin-top: 10px;
-}
-
-.domo:last-child {
-    margin-bottom:10px;
-}
 
 /* New CSS */
 
@@ -292,12 +242,12 @@ h3.domoAge {
     flex-direction: row;
 }
 
-.border-left {
+#border-left {
     width: 15%;
     height: 100vh;
     background-color: #5ced73;
 }
-.border-right {
+#border-right {
     width: 15%;
     height: 100vh;
     background-color: #5ced73;
@@ -358,7 +308,7 @@ h3.domoAge {
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
-  border: 2px solid #4CAF50; /* Green border */
+  border: 2px solid #4CAF50; 
   color: #4CAF50;
   background-color: transparent;
   cursor: pointer;
@@ -366,7 +316,27 @@ h3.domoAge {
 }
 
 .buttonStyle:hover {
-  background-color: #4CAF50; /* Green background */
-  color: #fff; /* White text */
-  border-color: #4CAF50; /* Green border */
+  background-color: #4CAF50; 
+  color: #fff;
+  border-color: #4CAF50;
+}
+
+.textInput {
+    width: 50%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.textInputSmall {
+    width: 20%;
+    padding: 10px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    font-size: 16px;
 }

@@ -83,7 +83,6 @@ const SignupWindow = (props) => {
 const init = () => {
     const loginButton = document.getElementById('loginButton');
     const signupButton = document.getElementById('signupButton');
-    const resetPassButton = document.getElementById('resetPassButton');
     const root = createRoot(document.getElementById('content'));
 
     loginButton.addEventListener('click', (e) => {

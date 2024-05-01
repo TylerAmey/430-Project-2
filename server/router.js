@@ -11,6 +11,8 @@ const router = (app) => {
 
   app.post('/premiumSignup', mid.requiresSecure, mid.requiresLogin, controllers.Account.togglePremium);
 
+  app.get('/getUserPremium', mid.requiresLogin, controllers.Account.getUserPremium);
+
   app.get('/logout', mid.requiresLogin, controllers.Account.logout);
 
   // Should this be get?
@@ -25,7 +27,9 @@ const router = (app) => {
 
   app.get('/', mid.requiresSecure, mid.requiresLogout, controllers.Account.loginPage);
 
-  //not found
+  // app.head(notFound, mid.requiresSecure,)
+
+  // not found
 };
 
 module.exports = router;
