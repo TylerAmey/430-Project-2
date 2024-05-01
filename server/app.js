@@ -36,13 +36,13 @@ redisClient.on('error', (err) => console.log('Redis Client Error', err));
 
 redisClient.connect().then(() => {
   const app = express();
-  // file
-  app.use(fileUpload());
 
   app.use(helmet());
   app.use('/assets', express.static(path.resolve(`${__dirname}/../hosted/`)));
   app.use(favicon(`${__dirname}/../hosted/img/favicon.png`));
   app.use(compression());
+  // file
+  app.use(fileUpload());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 

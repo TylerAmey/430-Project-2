@@ -206,7 +206,7 @@ const AdSpaceWindow = (props) => {
             const response = await fetch('/getUserPremium');
             const data = await response.json();
             resp = data;
-            setUserData(data)
+            setUserData(data.premium);
         }
 
         fetchPremium();
@@ -278,6 +278,8 @@ const init = () => {
 
     right.render( <AdSpaceWindow /> );
     left.render( <AdSpaceWindow /> );
+
+    root.render(<UploadWindow />)
 };
 
 window.onload = init;
