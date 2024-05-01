@@ -133,7 +133,8 @@ const searchFile = async (req, res) => {
     const sheetNames = workbook.SheetNames;
 
     // convert to json for ease of use
-    const jsonSheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]], { blankrows: false });
+    const jsonSheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]], 
+      { blankrows: false });
     console.log(jsonSheet);
     try {
       // search for the term. possibly make everything lowercase?
